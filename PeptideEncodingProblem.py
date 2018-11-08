@@ -14,10 +14,10 @@ RNAdict = {
 
 def main():
 	result = []
-	#text = input()
-	#peptide = input()
-	text = "ATGGCCATGGCCCCCAGAACTGAGATCAATAGTACCCGTATTAACGGGTGA"
-	peptide = "MA"
+	text = input()
+	peptide = input()
+	#text = "ATGGCCATGGCCCCCAGAACTGAGATCAATAGTACCCGTATTAACGGGTGA"
+	#peptide = "MA"
 	peptide_len = len(peptide)
 	pptd_len_inText = peptide_len * 3
 	text_len = len(text)

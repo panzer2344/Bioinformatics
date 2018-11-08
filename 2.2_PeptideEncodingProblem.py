@@ -1,4 +1,3 @@
-
 RNAdict = {
 	'AAA' : 'K', 'AAC' : 'N', 'AAG' : 'K', 'AAU' : 'N', 'ACA' : 'T', 
 	'ACC' : 'T', 'ACG' : 'T', 'ACU' : 'T', 'AGA' : 'R', 'AGC' : 'S', 'AGG' : 'R',
@@ -15,10 +14,10 @@ RNAdict = {
 
 def main():
 	result = []
-	#text = input()
-	#peptide = input()
-	text = "ATGGCCATGGCCCCCAGAACTGAGATCAATAGTACCCGTATTAACGGGTGA"
-	peptide = "A"
+	text = input()
+	peptide = input()
+	#text = "ATGGCCATGGCCCCCAGAACTGAGATCAATAGTACCCGTATTAACGGGTGA"
+	#peptide = "MA"
 	peptide_len = len(peptide)
 	pptd_len_inText = peptide_len * 3
 	text_len = len(text)
@@ -45,13 +44,14 @@ def main():
 	
 	
 def reverese_complement(_text, _text_len):
+	reverse = _text
 	complements = ['A', 'G', 'C', 'T']
 	for i in range(0, _text_len):
 		for j in range(0, 4):
-			if _text[i] == complements[j]:
-				_text = _text[:i] + complements[3 - j] + _text[i+1:]
+			if reverse[i] == complements[j]:
+				reverse = reverse[:i] + complements[3 - j] + reverse[i+1:]
 				break
-	return _text[::-1]
+	return reverse[::-1]
 
 def translation(triplets):
 	result = ""
@@ -68,4 +68,3 @@ def translation(triplets):
 		
 if __name__ == "__main__":
 		main()
-	
