@@ -12,33 +12,59 @@ RNAdict = {
 	'UGU' : 'C', 'UUA' : 'L', 'UUC' : 'F', 'UUG' : 'L', 'UUU' : 'F'
 }
 
-
 def main():
+	result = []
 	#text = input()
 	#peptide = input()
 	text = "ATGGCCATGGCCCCCAGAACTGAGATCAATAGTACCCGTATTAACGGGTGA"
 	peptide = "MA"
 	peptide_len = len(peptide)
+	pptd_len_inText = peptide_len * 3
 	text_len = len(text)
 	
-	for i in range(0, text_len):
-		pattern = text[i: i + 6]
-		leftTriplet = pattern[:]
-
+	for i in range(0, text_len - pptd_len_inText + 1):
+		pattern = text[i:i + pptd_len_inText]
+		reversePattern = reverese_complement(pattern, pptd_len_inText)
+		
+		tripletsOriginal = []
+		for i in range(0, pptd_len_inText, 3):
+			tripletsOriginal += [pattern[i:i+3]]
+		
+		tripletsReverse = []
+		for i in range(0, pptd_len_inText, 3):
+			tripletsReverse += [reversePattern[i:i+3]]
+		
+		translPep = translation(tripletsOriginal)
+		translRrsPep = translation(tripletsReverse)
+		if translPep == peptide or translRrsPep == peptide:
+			result += [pattern]
+	#result.sort()
+	for res in result:
+		print(res)
 	
 	
 def reverese_complement(_text, _text_len):
+	reverse = _text
 	complements = ['A', 'G', 'C', 'T']
 	for i in range(0, _text_len):
 		for j in range(0, 4):
-			if _text[i] == complements[j]:
-				_text = _text[:i] + complements[3 - j] + _text[i+1:]
+			if reverse[i] == complements[j]:
+				reverse = reverse[:i] + complements[3 - j] + reverse[i+1:]
 				break
-	#resultString = _text[::-1].replace('T', 'U')
-	return _text[::-1]#resultString
+	return reverse[::-1]
+
+def translation(triplets):
+	result = ""
+	for triplet in triplets:
+		triplet = triplet.replace('T', 'U')
+		rna = RNAdict.get(triplet)
+		if rna == None:
+			return None
+		else:
+			result += rna
+	return result
 	
-	
+		
+		
 if __name__ == "__main__":
 		main()
-	
-	
