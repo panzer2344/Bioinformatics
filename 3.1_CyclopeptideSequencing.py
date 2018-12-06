@@ -6,7 +6,9 @@ masses = {
 	'Y' : 163, 'V' : 99 
 }
 
+
 masses_dict = sorted(set(masses.values()))
+
 
 
 def add_mass(_subpeptide, _spMasses):
@@ -38,6 +40,20 @@ def cyclospectrum(peptide):
 	return spMasses
 
 
+def linear_spectrum(peptide):
+	
+	spMasses = [0]
+
+	for i in range(1, len(peptide)):
+		for j in range(0, len(peptide) - i + 1):
+			add_mass(peptide[j:j+i], spMasses)
+	spMasses.sort()
+	add_mass(peptide, spMasses)
+
+	return spMasses
+
+
+
 
 def expand(peptides):
 	
@@ -54,18 +70,26 @@ def expand(peptides):
 				result.append(new_pep)
 	
 	return result
-		
+	
+	
 
 def is_consistent(peptide, spectrum):
+
+	pepSpec = linear_spectrum(peptide)
+	
 	specCpy = spectrum.copy()
 	
-	for amino in peptide:
+	for amino in pepSpec:
 		if amino in specCpy:
 			specCpy.remove(amino)
 		else:
 			return False
 	
-	return True
+	if mass(peptide) in spectrum:
+		return True
+	else:
+		return False
+
 
 
 def mass(peptide):
@@ -75,13 +99,18 @@ def mass(peptide):
 		result += amino
 		
 	return result
+
+
 	
 def parent_mass(spectrum):
 	return spectrum[ len(spectrum) - 1 ]
+
+
 	
 def print_peptide(peptide):
 	for i in range(len(peptide)):
 		print(peptide[i], end = "-" if i < len(peptide) - 1 else " ")
+
 	
 	
 def cyclopeptide_sequencing(spectrum):
@@ -96,7 +125,7 @@ def cyclopeptide_sequencing(spectrum):
 			if mass(peptide) == parent_mass(spectrum):
 				if cyclospectrum(peptide) == spectrum:
 					print_peptide(peptide)
-					
+									
 				need_delete.append(peptide)
 
 			elif not is_consistent(peptide, spectrum):
@@ -110,11 +139,9 @@ def cyclopeptide_sequencing(spectrum):
 		
 
 def main():
-	spectrum = [int(elem) for elem in input().split()]	
+	spectrum = [int(elem) for elem in input().split()]
 	cyclopeptide_sequencing(spectrum)
 	
-	#0 97 97 99 101 103 196 198 198 200 202 295 297 299 299 301 394 396 398 400 400 497
-	#0 71 97 99 101 101 113 114 129 131 163 186 202 202 211 227 228 230 230 234 260 287 299 301 324 329 331 331 359 365 374 388 400 413 430 430 445 460 462 464 487 501 510 514 517 531 558 561 561 576 593 611 615 616 630 632 673 675 689 690 694 712 729 744 744 747 774 788 791 795 804 818 841 843 845 860 875 875 892 905 917 931 940 946 974 974 976 981 1004 1006 1018 1045 1071 1075 1075 1077 1078 1094 1103 1103 1119 1142 1174 1176 1191 1192 1204 1204 1206 1208 1234 1305
 
 if __name__ == "__main__":
 	main()
